@@ -1,20 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chistes Programación</title>
+    <style>
+        .body{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .oculto {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Chiste de Programación</h1>
     <p id="joke">Cargando chiste...</p>
+
+    <div>
+        <p id="setup" class="oculto"></p>
+        <p id="delivery" class="oculto"></p>
+    </div>
 
     <script>
         async function fetchJoke() {
             try {
-                const response = await fetch('https://v2.jokeapi.dev/joke/Programming?lang=es&blacklistFlags=nsfw,religious,political,racist,sexist,explicit&format=txt&idRange=1-6');
-                const joke = await response.text();
-                document.getElementById('joke').innerText = joke;
+                const response = await fetch('https://v2.jokeapi.dev/joke/Programming?lang=es');
+                const joke = await response.json();
+                console.log(joke)
+                if (joke.type === 'twopart') {
+                    const oculto = document.querySelectorAll('.oculto')
+                    oculto.forEach(element => element.style.display = 'block')
+
+                    document.getElementById('setup').innerText = joke["setup"];
+                    document.getElementById('delivery').innerText = joke["delivery"];
+                    document.getElementById('joke').style.display = 'none'
+                } else {
+                    document.getElementById('joke').innerText = joke["joke"]
+                }
             } catch (error) {
                 document.getElementById('joke').innerText = 'No se pudo cargar un chiste en este momento.';
             }
@@ -23,4 +47,5 @@
         fetchJoke();
     </script>
 </body>
+
 </html>
