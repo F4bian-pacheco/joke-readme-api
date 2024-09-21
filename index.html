@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chistes Programación</title>
+</head>
+<body>
+    <h1>Chiste de Programación</h1>
+    <p id="joke">Cargando chiste...</p>
+
+    <script>
+        async function fetchJoke() {
+            try {
+                const response = await fetch('https://v2.jokeapi.dev/joke/Programming?lang=es&blacklistFlags=nsfw,religious,political,racist,sexist,explicit&format=txt&idRange=1-6');
+                const joke = await response.text();
+                document.getElementById('joke').innerText = joke;
+            } catch (error) {
+                document.getElementById('joke').innerText = 'No se pudo cargar un chiste en este momento.';
+            }
+        }
+
+        fetchJoke();
+    </script>
+</body>
+</html>
